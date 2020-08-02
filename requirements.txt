@@ -4,3 +4,4 @@ googletrans
 gtts
 romkan
 pykakasi
+beautifulsoup4
