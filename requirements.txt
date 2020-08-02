@@ -3,3 +3,4 @@ python-telegram-bot
 googletrans
 gtts
 romkan
+pykakasi

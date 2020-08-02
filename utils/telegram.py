@@ -4,10 +4,10 @@ from telegram.ext import Updater, CommandHandler
 
 from .constants import BOT_TOKEN
 from .translate_service import TranslateService as TS
+from .kana_converter import KanaConverter as KC
 
 
 class TelegramService(object):
-
     def get_command_and_args(self, message):
         chat_id = message.chat_id
         text = message.text
@@ -33,6 +33,10 @@ class TelegramService(object):
         updater = Updater(BOT_TOKEN, use_context=True)
         updater.dispatcher.add_handler(CommandHandler("tr", self.translate_word))
         updater.dispatcher.add_handler(CommandHandler("rd", self.send_random_word))
+        updater.dispatcher.add_handler(
+            CommandHandler("sentence", self.send_random_sentence)
+        )
+        updater.dispatcher.add_handler(CommandHandler("n5", self.send_specify_level))
 
         # Run the bot
         updater.start_polling()
@@ -53,7 +57,7 @@ class TelegramService(object):
             trans_text = translation.get("text", content)
             trans_pronunciation = translation.get("pronunciation", content)
 
-            text_to_send = "Translated: %s\nPronunciation: %s "% (
+            text_to_send = "Translated: %s\nPronunciation: %s " % (
                 trans_text,
                 trans_pronunciation,
             )
@@ -64,13 +68,13 @@ class TelegramService(object):
             )
         except Exception as error:
             print(error)
-    
+
     def send_random_word(self, update, context):
         try:
-            dictionary = pd.read_csv('files/dictionary.csv')
+            dictionary = pd.read_csv("files/dictionary.csv")
 
-            kana = dictionary['Vocab-kana'].sample(1).values[0]
-            ts = TS(src='ja', dest='id', voice_desc='ja')
+            kana = dictionary["Vocab-kana"].sample(1).values[0]
+            ts = TS(src="ja", dest="id", voice_desc="ja")
             translation = ts.translate(kana)
             ts.create_voice(kana)
 
@@ -81,8 +85,71 @@ class TelegramService(object):
             text_to_send = "From: %s \nPronunciation: %s \nMeaning (ID): %s" % (
                 kana,
                 trans_pronunciation,
-                trans_text
+                trans_text,
             )
+
+            context.bot.send_message(chat_id=chat_id, text=text_to_send)
+            context.bot.send_voice(
+                chat_id=chat_id, voice=open("files/result.mp3", "rb")
+            )
+        except Exception as error:
+            print(error)
+
+    def send_specify_level(self, update, context):
+        try:
+            dictionary = pd.read_csv("files/N5_dicts.csv")
+
+            list_data = dictionary[["kanji", "kana", "primary"]].sample(1).values[0]
+
+            kanji = list_data[0]
+            kana = list_data[1]
+            primary_meaning = list_data[2]
+
+            kc = KC()
+            _, romaji = kc.kanji_to_romaji(kana)
+
+            # create sound
+            ts = TS()
+            ts.create_voice(kana, lang="ja")
+
+            chat_id = update.message.chat_id
+            text_to_send = "Kanji: %s \nHira: %s \nRomaji: %s \nMeaning (EN): %s" % (
+                kanji,
+                kana,
+                romaji,
+                primary_meaning,
+            )
+
+            context.bot.send_message(chat_id=chat_id, text=text_to_send)
+            context.bot.send_voice(
+                chat_id=chat_id, voice=open("files/result.mp3", "rb")
+            )
+        except Exception as error:
+            print(error)
+
+    def send_random_sentence(self, update, context):
+        try:
+            dictionary = pd.read_csv("files/sentences.csv")
+            selected_data = dictionary[["kana", "meaning"]].sample(1).values[0]
+
+            kana = selected_data[0]
+            meaning = selected_data[1]
+
+            # let's convert to romaji
+            kc = KC()
+            katakana, romaji = kc.kanji_to_romaji(kana)
+
+            chat_id = update.message.chat_id
+            text_to_send = "From:\n%s \n%s \n%s \n\nMeaning (ID): \n%s" % (
+                kana,
+                katakana,
+                romaji,
+                meaning,
+            )
+
+            # create voice
+            ts = TS()
+            ts.create_voice(kana, lang="ja")
 
             context.bot.send_message(chat_id=chat_id, text=text_to_send)
             context.bot.send_voice(
