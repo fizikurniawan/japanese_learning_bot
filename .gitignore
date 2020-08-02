@@ -16,3 +16,6 @@ venv/*
 .vscode/*
 constants.py
 __pycache__/*
+
+# audio
+files/result.mp3

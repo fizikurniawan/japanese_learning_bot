@@ -36,7 +36,7 @@ class TelegramService(object):
         updater.dispatcher.add_handler(
             CommandHandler("sentence", self.send_random_sentence)
         )
-        updater.dispatcher.add_handler(CommandHandler("n5", self.send_specify_level))
+        updater.dispatcher.add_handler(CommandHandler("vocab", self.send_specify_level))
 
         # Run the bot
         updater.start_polling()
@@ -97,13 +97,24 @@ class TelegramService(object):
 
     def send_specify_level(self, update, context):
         try:
-            dictionary = pd.read_csv("files/N5_dicts.csv")
+            level = context.args[0]
+            file_name = {
+                'n5': "files/N5_dicts.csv",
+                'n4': "files/N4_dicts.csv",
+                'n3': "files/N3_dicts.csv",
+                'n2': "files/N2_dicts.csv",
+                'n1': "files/N1_dicts.csv",
+            }
 
-            list_data = dictionary[["kanji", "kana", "primary"]].sample(1).values[0]
+            file_path = file_name.get(level, "files/N5_dicts.csv")
+
+            dictionary = pd.read_csv(file_path)
+
+            list_data = dictionary[["kanji", "kana", "primary", "meanings"]].sample(1).values[0]
 
             kanji = list_data[0]
             kana = list_data[1]
-            primary_meaning = list_data[2]
+            meanings = list_data[2] + ", " + list_data[3]
 
             kc = KC()
             _, romaji = kc.kanji_to_romaji(kana)
@@ -117,7 +128,7 @@ class TelegramService(object):
                 kanji,
                 kana,
                 romaji,
-                primary_meaning,
+                meanings,
             )
 
             context.bot.send_message(chat_id=chat_id, text=text_to_send)
