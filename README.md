@@ -22,17 +22,17 @@ Link: [t.me/benkyoushimashou_bot](//t.me/benkyoushimashou_bot)
 ### Screen Capture
 1. List Command
 
-![](files/images/list_command.jpeg =250x)
+![List Command](files/images/list_command.jpeg)
 	
 2. Send random word
 
-![](files/images/rd_word.jpeg =100x)
+![Send random word](files/images/rd_word.jpeg)
 
 3. Send random sentence
-![](files/images/rd_sentence.jpeg)
+![Send random sentence](files/images/rd_sentence.jpeg)
 
 4. Translate multi language
-![](files/images/translate.jpeg)
+![Translate multi language](files/images/translate.jpeg)
 
 5. Send word and sentence example by time X (customize)
 ![](files/images/schedule_word_and_example.jpeg)
