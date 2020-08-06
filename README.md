@@ -29,12 +29,15 @@ Link: [t.me/benkyoushimashou_bot](//t.me/benkyoushimashou_bot)
 ![Send random word](files/images/rd_word.jpeg)
 
 3. Send random sentence
+
 ![Send random sentence](files/images/rd_sentence.jpeg)
 
 4. Translate multi language
+
 ![Translate multi language](files/images/translate.jpeg)
 
 5. Send word and sentence example by time X (customize)
+
 ![](files/images/schedule_word_and_example.jpeg)
 
 
