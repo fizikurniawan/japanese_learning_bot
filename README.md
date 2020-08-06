@@ -21,10 +21,12 @@ Link: [t.me/benkyoushimashou_bot](//t.me/benkyoushimashou_bot)
 
 ### Screen Capture
 1. List Command
-![](files/images/list_command.jpeg)
+
+![](files/images/list_command.jpeg =250x)
 	
 2. Send random word
-![](files/images/rd_word.jpeg)
+
+![](files/images/rd_word.jpeg =100x)
 
 3. Send random sentence
 ![](files/images/rd_sentence.jpeg)
