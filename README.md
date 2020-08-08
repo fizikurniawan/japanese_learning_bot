@@ -1,7 +1,7 @@
 ### Japanese Learning Telegram Bot
 
 ### Feature
-1. Translate ID to JP
+1. Translate Multi language (default: ID to JP)
 2. Send Random Word with meaning
 3. Send Random Sentence
 4. Send Random word + sentence example every X time (customize)
