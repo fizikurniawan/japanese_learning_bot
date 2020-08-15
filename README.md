@@ -1,5 +1,10 @@
 ### Japanese Learning Telegram Bot
 
+### To Do
+1. Send Kanji with picture
+2. Daily Conversation
+3. Recognize Kanji 
+
 ### Feature
 1. Translate Multi language (default: ID to JP)
 2. Send Random Word with meaning
